@@ -1,0 +1,173 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Custom Font Import ─────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ── Base Layer ─────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    --bg-primary: #0a0e1a;
+    --bg-secondary: #111827;
+    --bg-card: #1a2236;
+    --bg-card-hover: #1f2a42;
+    --border-subtle: #1e293b;
+    --border-active: #3b5bdb;
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent: #4c6ef5;
+    --accent-glow: rgba(76, 110, 245, 0.15);
+  }
+
+  html {
+    @apply antialiased;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[var(--bg-primary)] text-[var(--text-primary)] font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    @apply bg-sentinel-600/40 text-white;
+  }
+}
+
+/* ── Component Layer ────────────────────────────────────────────────── */
+@layer components {
+  /* Glass morphism card */
+  .glass-card {
+    @apply relative overflow-hidden rounded-xl border border-white/[0.06]
+           bg-gradient-to-br from-white/[0.04] to-white/[0.01]
+           backdrop-blur-xl shadow-xl shadow-black/20;
+  }
+
+  .glass-card::before {
+    content: '';
+    @apply absolute inset-0 rounded-xl;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.03) 0%,
+      transparent 50%,
+      transparent 100%
+    );
+    pointer-events: none;
+  }
+
+  /* Glow effect on hover */
+  .glow-hover {
+    @apply transition-all duration-300;
+  }
+  .glow-hover:hover {
+    box-shadow: 0 0 30px rgba(76, 110, 245, 0.08),
+                0 0 60px rgba(76, 110, 245, 0.04);
+  }
+
+  /* Risk badge styles */
+  .risk-badge {
+    @apply px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider;
+  }
+  .risk-low { @apply bg-emerald-500/15 text-emerald-400 border border-emerald-500/20; }
+  .risk-medium { @apply bg-yellow-500/15 text-yellow-400 border border-yellow-500/20; }
+  .risk-high { @apply bg-orange-500/15 text-orange-400 border border-orange-500/20; }
+  .risk-critical { @apply bg-red-500/15 text-red-400 border border-red-500/20; }
+
+  /* Custom scrollbar */
+  .custom-scrollbar::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-white/20;
+  }
+
+  /* Animated gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #4c6ef5, #748ffc, #91a7ff, #4c6ef5);
+    background-size: 300% 300%;
+    animation: gradientShift 6s ease-in-out infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Shimmer loading */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03) 25%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0.03) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  /* Tab style */
+  .tab-active {
+    @apply relative text-white;
+  }
+  .tab-active::after {
+    content: '';
+    @apply absolute bottom-0 left-0 right-0 h-0.5 bg-sentinel-500 rounded-full;
+  }
+
+  /* Input styles */
+  .input-dark {
+    @apply w-full rounded-lg border border-white/[0.08] bg-white/[0.03]
+           px-4 py-3 text-sm text-white placeholder-slate-500
+           outline-none transition-all duration-200
+           focus:border-sentinel-500/50 focus:ring-2 focus:ring-sentinel-500/10
+           focus:bg-white/[0.05];
+  }
+
+  /* Button primary */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2
+           rounded-lg bg-sentinel-600 px-6 py-2.5 text-sm font-semibold text-white
+           shadow-lg shadow-sentinel-600/25
+           transition-all duration-200
+           hover:bg-sentinel-500 hover:shadow-sentinel-500/30
+           active:scale-[0.98]
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-sentinel-600;
+  }
+
+  /* Button ghost */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           rounded-lg px-4 py-2 text-sm font-medium text-slate-400
+           transition-all duration-200
+           hover:bg-white/[0.05] hover:text-white;
+  }
+
+  /* Progress bar track */
+  .progress-track {
+    @apply h-2 w-full overflow-hidden rounded-full bg-white/[0.06];
+  }
+}
+
+/* ── Utility Layer ──────────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Noise overlay for subtle texture */
+  .noise-bg::after {
+    content: '';
+    @apply absolute inset-0 opacity-[0.015] pointer-events-none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  }
+}
